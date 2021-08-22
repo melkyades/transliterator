@@ -4,10 +4,7 @@ Copyright (c) 2021 Quorum Software.
 "
 Class {
 	#name : #BeeModuleBuilder,
-	#superclass : #Object,
-	#instVars : [
-		'module'
-	],
+	#superclass : #ImageModuleBuilder,
 	#category : #'CodeSpecs-Porting'
 }
 
@@ -59,13 +56,6 @@ BeeModuleBuilder >> addAllMethodsFrom: aClass project: aBeeProject into: aClassS
 ]
 
 { #category : #'adding / removing' }
-BeeModuleBuilder >> addClass: aClass [
-	| class |
-	class := self addClassDefinition: aClass.
-	self addAllMethodsFrom: aClass into: class
-]
-
-{ #category : #'adding / removing' }
 BeeModuleBuilder >> addClassDefinition: aClass [
 	| spec |
 	spec := self specFromClass: aClass.
@@ -81,11 +71,6 @@ BeeModuleBuilder >> addClassExtension: aClass [
 	module addClassExtension: spec.
 	self importSharedPoolsOf: aClass.
 	^spec
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> addClasses: aCollection [
-	aCollection do: [:c | self addClass: c]
 ]
 
 { #category : #'adding / removing' }
@@ -106,48 +91,8 @@ BeeModuleBuilder >> addMethods: aCollection [
 ]
 
 { #category : #'adding / removing' }
-BeeModuleBuilder >> addMethods: aCollection into: aSpeciesSpec [
-	| specs |
-	specs := aCollection
-		collect: [:m | self specFromMethod: m species: aSpeciesSpec].
-	aSpeciesSpec addMethods: specs
-]
-
-{ #category : #'adding / removing' }
 BeeModuleBuilder >> addProject: aBeeProject [
 	self addClasses: aBeeProject classes; addMethods: aBeeProject extensions
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> addSelectors: aCollection from: aSpecies [
-	| class methods |
-	class := self ensureClass: aSpecies instanceClass.
-	aSpecies isMetaclass ifTrue: [class := class metaclass].
-	methods := aCollection collect: [:selector | aSpecies >> selector].
-	self addMethods: methods into: class
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> addSubclassifiedClasses [
-	module allClassesDo: [:c | self addSuperclassesOf: c]
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> addSuperclassesOf: aClassSpec [
-	| next spec |
-	next := aClassSpec supername.
-	[
-		next ifNil: [| c |
-			c := Smalltalk at: aClassSpec name asSymbol ifAbsent: [^self].
-			next := c superclass ifNotNil: [:s | s name]].
-		next ifNil: [^self].
-		spec := module resolveClass: next.
-		spec isNil or: [self isIncomplete: spec]]
-		whileTrue: [| class |
-			class := Smalltalk at: next asSymbol.
-			spec := self specFromClass: class.
-			module addSubclassifiedClass: spec.
-			next := spec supername]
 ]
 
 { #category : #services }
@@ -177,13 +122,6 @@ BeeModuleBuilder >> calculateDependencies [
 	module addDependencies: extensions
 ]
 
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> ensureClass: aClass [
-	| class |
-	class := module resolveClass: aClass name.
-	^class ifNil: [self addClassExtension: aClass] ifNotNil: [class]
-]
-
 { #category : #services }
 BeeModuleBuilder >> ignoredProjects [
 	^self class ignoredProjects
@@ -195,11 +133,6 @@ BeeModuleBuilder >> importSharedPoolsOf: aClass [
 		module at: symbol ifAbsent: [| pool |
 			pool := Smalltalk at: symbol.
 			module addImport: symbol -> pool copy]]
-]
-
-{ #category : #initialization }
-BeeModuleBuilder >> initialize [
-	module := ModuleSpec new
 ]
 
 { #category : #'adding / removing' }
@@ -238,26 +171,6 @@ BeeModuleBuilder >> loadExtensionFromImage: aClassSpec [
 { #category : #'adding / removing' }
 BeeModuleBuilder >> loadExtensionsFromImage [
 	module extendedClasses copy do: [:spec | self loadExtensionFromImage: spec]
-]
-
-{ #category : #accessing }
-BeeModuleBuilder >> module [
-	^module
-]
-
-{ #category : #initialization }
-BeeModuleBuilder >> module: aModuleSpec [
-	module := aModuleSpec
-]
-
-{ #category : #accessing }
-BeeModuleBuilder >> name: aString [
-	module name: aString
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> removeClass: aClassSpec [
-	module removeClass: aClassSpec
 ]
 
 { #category : #private }

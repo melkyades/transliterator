@@ -17,7 +17,7 @@ Class {
 ModuleTransliteratorTest >> setUp [
 	module := ModuleSpec new name: 'TestModule'.
 	transliterator := ModuleTransliterator new module: module.
-	builder := BeeModuleBuilder new module: module
+	builder := self builderClass new module: module
 ]
 
 { #category : #private }
