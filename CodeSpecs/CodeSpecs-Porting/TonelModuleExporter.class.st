@@ -3,7 +3,7 @@ Copyright (c) 2021 Quorum Software.
 	See (MIT) license in root directory.
 "
 Class {
-	#name : #ModuleExporter,
+	#name : #TonelModuleExporter,
 	#superclass : #Object,
 	#instVars : [
 		'module',
@@ -14,27 +14,27 @@ Class {
 }
 
 { #category : #'instance creation' }
-ModuleExporter class >> new [
+TonelModuleExporter class >> new [
 	^super new initialize
 ]
 
 { #category : #accessing }
-ModuleExporter >> compatible: aBoolean [
+TonelModuleExporter >> compatible: aBoolean [
 	compatible := aBoolean
 ]
 
 { #category : #accessing }
-ModuleExporter >> copyright [
+TonelModuleExporter >> copyright [
 	^'Copyright (c) ' , Date today year asString , ' Quorum Software.'
 ]
 
 { #category : #private }
-ModuleExporter >> createFolder [
+TonelModuleExporter >> createFolder [
 	self moduleFolder createPath
 ]
 
 { #category : #private }
-ModuleExporter >> definition [
+TonelModuleExporter >> definition [
 	| names |
 	names := (module classes collect: #name) sort.
 	^OrderedDictionary new
@@ -46,7 +46,7 @@ ModuleExporter >> definition [
 ]
 
 { #category : #export }
-ModuleExporter >> export [
+TonelModuleExporter >> export [
 	self
 		createFolder;
 		exportMetadata;
@@ -55,7 +55,7 @@ ModuleExporter >> export [
 ]
 
 { #category : #export }
-ModuleExporter >> exportClass: aClassSpec [
+TonelModuleExporter >> exportClass: aClassSpec [
 	| filename |
 	filename := self filenameForClass: aClassSpec.
 	self withFileNamed: filename do: [:stream | | writer |
@@ -70,12 +70,12 @@ ModuleExporter >> exportClass: aClassSpec [
 ]
 
 { #category : #export }
-ModuleExporter >> exportClasses [
+TonelModuleExporter >> exportClasses [
 	module classes do: [:class | self exportClass: class]
 ]
 
 { #category : #export }
-ModuleExporter >> exportEmptyClass: aClassSpec [
+TonelModuleExporter >> exportEmptyClass: aClassSpec [
 	| filename |
 	filename := self filenameForClass: aClassSpec.
 	self withFileNamed: filename do: [:stream | | writer |
@@ -88,12 +88,12 @@ ModuleExporter >> exportEmptyClass: aClassSpec [
 ]
 
 { #category : #export }
-ModuleExporter >> exportEmptyClasses [
+TonelModuleExporter >> exportEmptyClasses [
 	module classes do: [:class | self exportEmptyClass: class]
 ]
 
 { #category : #export }
-ModuleExporter >> exportExtendedClass: aClassSpec [
+TonelModuleExporter >> exportExtendedClass: aClassSpec [
 	| filename |
 	filename := self filenameForExtension: aClassSpec.
 	self withFileNamed: filename do: [:stream | 
@@ -104,12 +104,12 @@ ModuleExporter >> exportExtendedClass: aClassSpec [
 ]
 
 { #category : #export }
-ModuleExporter >> exportExtendedClasses [
+TonelModuleExporter >> exportExtendedClasses [
 	module extendedClasses do: [:class | self exportExtendedClass: class]
 ]
 
 { #category : #export }
-ModuleExporter >> exportMetadata [
+TonelModuleExporter >> exportMetadata [
 	| package |
 	package := self moduleFolder \ 'package.st'.
 	self withFileNamed: package do: [:stream | 
@@ -118,18 +118,18 @@ ModuleExporter >> exportMetadata [
 ]
 
 { #category : #services }
-ModuleExporter >> exportPseudoTonel [
+TonelModuleExporter >> exportPseudoTonel [
 	compatible := false.
 	self export
 ]
 
 { #category : #private }
-ModuleExporter >> exportedName [
+TonelModuleExporter >> exportedName [
 	^module name copy replace: Character space with: $\
 ]
 
 { #category : #private }
-ModuleExporter >> filenameForClass: aClassSpec [
+TonelModuleExporter >> filenameForClass: aClassSpec [
 	| name |
 	name := aClassSpec name asFilename.
 	compatible ifTrue: [name := name appendExtension: 'class'].
@@ -137,7 +137,7 @@ ModuleExporter >> filenameForClass: aClassSpec [
 ]
 
 { #category : #private }
-ModuleExporter >> filenameForExtension: aClassSpec [
+TonelModuleExporter >> filenameForExtension: aClassSpec [
 	| name |
 	name := aClassSpec name asFilename.
 	compatible ifTrue: [name := name appendExtension: 'extension'].
@@ -145,32 +145,32 @@ ModuleExporter >> filenameForExtension: aClassSpec [
 ]
 
 { #category : #accessing }
-ModuleExporter >> license [
+TonelModuleExporter >> license [
 	^'See (MIT) license in root directory.'
 ]
 
 { #category : #accessing }
-ModuleExporter >> module: aModuleSpec [
+TonelModuleExporter >> module: aModuleSpec [
 	module := aModuleSpec
 ]
 
 { #category : #private }
-ModuleExporter >> moduleFolder [
+TonelModuleExporter >> moduleFolder [
 	^path \ self exportedName
 ]
 
 { #category : #private }
-ModuleExporter >> moduleName [
+TonelModuleExporter >> moduleName [
 	^self exportedName asFilename entityName
 ]
 
 { #category : #accessing }
-ModuleExporter >> path: aFilename [
+TonelModuleExporter >> path: aFilename [
 	path := aFilename asFilename
 ]
 
 { #category : #private }
-ModuleExporter >> withFileNamed: aFilename do: aBlock [
+TonelModuleExporter >> withFileNamed: aFilename do: aBlock [
 	| stream |
 	stream := aFilename asFile writeStream.
 	stream

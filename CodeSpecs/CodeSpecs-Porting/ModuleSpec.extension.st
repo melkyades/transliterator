@@ -17,5 +17,5 @@ ModuleSpec >> beeDefinition [
 
 { #category : #'*CodeSpecs-Porting' }
 ModuleSpec >> exportPseudoTonel: path [
-	ModuleExporter new path: path; module: self; exportPseudoTonel
+	TonelModuleExporter new path: path; module: self; exportPseudoTonel
 ]

@@ -3,7 +3,7 @@ Copyright (c) 2021 Quorum Software.
 	See (MIT) license in root directory.
 "
 Class {
-	#name : #ModuleImporter,
+	#name : #TonelModuleImporter,
 	#superclass : #Object,
 	#instVars : [
 		'module',
@@ -14,17 +14,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-ModuleImporter class >> new [
+TonelModuleImporter class >> new [
 	^super new initialize
 ]
 
 { #category : #import }
-ModuleImporter >> import [
+TonelModuleImporter >> import [
 	self importMetadata; importClasses; importExtendedClasses
 ]
 
 { #category : #import }
-ModuleImporter >> importClass: aString [
+TonelModuleImporter >> importClass: aString [
 	| filename reader definition pointers variable class metasclass stream |
 	filename := path \ aString withExtension: 'st'.
 	filename exists ifFalse: [
@@ -58,12 +58,12 @@ ModuleImporter >> importClass: aString [
 ]
 
 { #category : #import }
-ModuleImporter >> importClasses [
+TonelModuleImporter >> importClasses [
 	(metadata at: #classes) do: [:name | self importClass: name]
 ]
 
 { #category : #import }
-ModuleImporter >> importExtendedClass: aString [
+TonelModuleImporter >> importExtendedClass: aString [
 	| filename stream reader definition class metaclass |
 	filename := path \ aString withExtension: 'st'.
 	filename exists ifFalse: [
@@ -84,7 +84,7 @@ ModuleImporter >> importExtendedClass: aString [
 ]
 
 { #category : #import }
-ModuleImporter >> importExtendedClasses [
+TonelModuleImporter >> importExtendedClasses [
 	| classes filenames candidates |
 	classes := metadata at: #classes.
 	filenames := path asDirectory fileNamesWithExtension: 'st'.
@@ -95,7 +95,7 @@ ModuleImporter >> importExtendedClasses [
 ]
 
 { #category : #import }
-ModuleImporter >> importMetadata [
+TonelModuleImporter >> importMetadata [
 	| stream name |
 	stream := (path \ 'package.st') asFile readStream.
 	stream throughAll: 'Package '.
@@ -105,7 +105,7 @@ ModuleImporter >> importMetadata [
 ]
 
 { #category : #import }
-ModuleImporter >> importMethod: aDictionary [
+TonelModuleImporter >> importMethod: aDictionary [
 	| classname selector category class signature body source method |
 	classname := aDictionary at: #class.
 	selector := aDictionary at: #selector.
@@ -129,22 +129,22 @@ ModuleImporter >> importMethod: aDictionary [
 ]
 
 { #category : #initialization }
-ModuleImporter >> initialize [
+TonelModuleImporter >> initialize [
 	super initialize.
 	module := ModuleSpec new
 ]
 
 { #category : #accessing }
-ModuleImporter >> module [
+TonelModuleImporter >> module [
 	^module
 ]
 
 { #category : #accessing }
-ModuleImporter >> module: aModuleSpec [
+TonelModuleImporter >> module: aModuleSpec [
 	module := aModuleSpec
 ]
 
 { #category : #accessing }
-ModuleImporter >> path: aFilename [
+TonelModuleImporter >> path: aFilename [
 	path := aFilename
 ]
