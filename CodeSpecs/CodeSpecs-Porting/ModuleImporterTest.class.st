@@ -5,5 +5,5 @@ Copyright (c) 2021 Quorum Software.
 Class {
 	#name : #ModuleImporterTest,
 	#superclass : #TestCase,
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Tests'
 }

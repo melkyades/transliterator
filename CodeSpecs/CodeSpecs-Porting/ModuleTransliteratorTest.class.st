@@ -10,7 +10,7 @@ Class {
 		'transliterator',
 		'builder'
 	],
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Tests'
 }
 
 { #category : #private }
