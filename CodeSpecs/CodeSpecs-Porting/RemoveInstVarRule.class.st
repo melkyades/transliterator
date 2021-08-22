@@ -9,7 +9,7 @@ Class {
 		'ivar',
 		'classname'
 	],
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Rules'
 }
 
 { #category : #private }

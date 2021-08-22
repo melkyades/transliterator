@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'block'
 	],
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Rules'
 }
 
 { #category : #'instance creation' }

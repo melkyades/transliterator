@@ -5,5 +5,5 @@ Copyright (c) 2021 Quorum Software.
 Class {
 	#name : #RefactoringRule,
 	#superclass : #TransliterationRule,
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Rules'
 }

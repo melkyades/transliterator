@@ -5,7 +5,7 @@ Copyright (c) 2021 Quorum Software.
 Class {
 	#name : #PackageRenameRule,
 	#superclass : #ConversionRule,
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Rules'
 }
 
 { #category : #private }

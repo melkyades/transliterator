@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'scope'
 	],
-	#category : #'CodeSpecs-Porting'
+	#category : #'CodeSpecs-Porting-Rules'
 }
 
 { #category : #'instance creation' }
