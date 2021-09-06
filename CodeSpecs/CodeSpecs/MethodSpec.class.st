@@ -34,7 +34,8 @@ MethodSpec >> asCompiledMethod [
 { #category : #converting }
 MethodSpec >> ast [
 	self canBeCompiled ifFalse: [^nil].
-	^ast ifNil: [ast := self compiler parseMethod: source]
+	^ast ifNil: 
+		[ast := [self compiler parse: source] on: SUndeclaredIdentifierError do: [ :e | e resume ]]
 ]
 
 { #category : #inquiries }

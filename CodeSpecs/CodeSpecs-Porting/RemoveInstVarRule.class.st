@@ -22,12 +22,12 @@ RemoveInstVarRule >> basicApplyTo: aModuleSpec [
 	| class all |
 	class := aModuleSpec resolveClass: classname.
 	class ifNil: [^self].
-	class instVarNames remove: ivar ifAbsent: nil.
 	all := aModuleSpec withAllSubclasses: class.
 	all do: [:c | 
-		c methods
+		c methods copy
 			select: [:m | m usesInstanceVariableNamed: ivar]
-			thenDo: [:m | aModuleSpec removeMethod: m]]
+			thenDo: [:m | aModuleSpec removeMethod: m]].
+	class instVarNames remove: ivar ifAbsent: nil.
 ]
 
 { #category : #accessing }

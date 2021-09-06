@@ -89,6 +89,11 @@ ModuleSpec >> allMethodsDo: aBlock [
 
 { #category : #'adding / removing' }
 ModuleSpec >> associationAt: aSymbol ifAbsent: aBlock [
+	| string |
+	string := aSymbol asString.
+	classes do: [:c | c name = string ifTrue: [^aSymbol -> c]].
+	extendedClasses do: [:c | c name = string ifTrue: [^aSymbol -> c]].
+	subclassifiedClasses do: [:c | c name = string ifTrue: [^aSymbol -> c]].
 	^imports associationAt: aSymbol ifAbsent: aBlock
 ]
 
@@ -113,6 +118,21 @@ ModuleSpec >> basicResolveClass: aString [
 	extendedClasses do: [:c | c name asString = aString ifTrue: [^c]].
 	subclassifiedClasses do: [:c | c name asString = aString ifTrue: [^c]].
 	^nil
+]
+
+{ #category : #'*CodeSpecs-Porting' }
+ModuleSpec >> beeDefinition [
+	| changes sorted meta useful extmeta |
+	sorted := self sortedClasses.
+	meta := sorted collect: [:c | c metaclass].
+	changes := OrderedCollection new.
+	sorted collect: [:c | c beeDefinition] in: changes.
+	useful := meta select: [:m | m instVarNames notEmpty].
+	useful collect: [:m | m beeDefinition] in: changes.
+	extmeta := extendedClasses collect: [:c | c metaclass].
+	meta , sorted , extendedClasses , extmeta
+		do: [:c | c methods collect: [:m | m beeDefinition] in: changes].
+	^changes
 ]
 
 { #category : #accessing }
@@ -161,6 +181,11 @@ ModuleSpec >> description [
 { #category : #accessing }
 ModuleSpec >> description: aString [
 	description := aString
+]
+
+{ #category : #'*CodeSpecs-Porting' }
+ModuleSpec >> exportPseudoTonel: path [
+	TonelModuleExporter new path: path; module: self; exportPseudoTonel
 ]
 
 { #category : #accessing }
@@ -235,7 +260,7 @@ ModuleSpec >> referencedGlobals [
 		m referencedIdentifiers
 			select: [:identifier | | b |
 				b := identifier binding.
-				b refersToGlobal or: [b isUnresolved]]
+				b isGlobal or: [b isUnresolved]]
 			thenDo: [:global | (referenced
 				at: global name
 				ifAbsentPut: [OrderedCollection new])

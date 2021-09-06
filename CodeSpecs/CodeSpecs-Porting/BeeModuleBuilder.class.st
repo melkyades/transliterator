@@ -56,24 +56,6 @@ BeeModuleBuilder >> addAllMethodsFrom: aClass project: aBeeProject into: aClassS
 ]
 
 { #category : #'adding / removing' }
-BeeModuleBuilder >> addClassDefinition: aClass [
-	| spec |
-	spec := self specFromClass: aClass.
-	module addClass: spec.
-	self importSharedPoolsOf: aClass.
-	^spec
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> addClassExtension: aClass [
-	| spec |
-	spec := self specFromClass: aClass.
-	module addClassExtension: spec.
-	self importSharedPoolsOf: aClass.
-	^spec
-]
-
-{ #category : #'adding / removing' }
 BeeModuleBuilder >> addMethod: aCompiledMethod [
 	| class spec |
 	class := self ensureClass: aCompiledMethod classBinding instanceClass.
@@ -127,22 +109,6 @@ BeeModuleBuilder >> ignoredProjects [
 	^self class ignoredProjects
 ]
 
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> importSharedPoolsOf: aClass [
-	aClass sharedPools do: [:symbol | 
-		module at: symbol ifAbsent: [| pool |
-			pool := Smalltalk at: symbol.
-			module addImport: symbol -> pool copy]]
-]
-
-{ #category : #'adding / removing' }
-BeeModuleBuilder >> isIncomplete: aClassSpec [
-	"
-	a class that has been added inderectly and whose shape is not defined
-	"
-	^aClassSpec name != 'ProtoObject' and: [aClassSpec superclass = nil]
-]
-
 { #category : #services }
 BeeModuleBuilder >> leaveOnlyProject: aBeeProject [
 	| target |
@@ -190,22 +156,4 @@ BeeModuleBuilder >> specFromClass: aClass [
 	aClass instancesAreArrayed ifTrue: [class beArrayed].
 	aClass instancesHavePointers ifFalse: [class beBytes].
 	^class
-]
-
-{ #category : #private }
-BeeModuleBuilder >> specFromMetaclass: aMetaclass class: aClassSpec [
-	^MetaclassSpec new
-		ivars: aMetaclass instVarNames asOrderedCollection;
-		module: module;
-		instanceClass: aClassSpec
-]
-
-{ #category : #private }
-BeeModuleBuilder >> specFromMethod: aCompiledMethod species: aSpeciesSpec [
-	^MethodSpec new
-		module: module;
-		selector: aCompiledMethod selector;
-		classBinding: aSpeciesSpec;
-		source: aCompiledMethod sourceCode;
-		category: aCompiledMethod category
 ]

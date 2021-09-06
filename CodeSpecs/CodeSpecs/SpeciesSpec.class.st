@@ -18,6 +18,16 @@ Class {
 }
 
 { #category : #'instance creation' }
+SpeciesSpec class >> arrayedFlag [
+	^2
+]
+
+{ #category : #'instance creation' }
+SpeciesSpec class >> bytesFlag [
+	^1
+]
+
+{ #category : #'instance creation' }
 SpeciesSpec class >> new [
 	^super new initialize
 ]

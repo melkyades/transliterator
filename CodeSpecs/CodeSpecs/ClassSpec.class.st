@@ -23,6 +23,11 @@ ClassSpec >> allMethods [
 ]
 
 { #category : #enumerating }
+ClassSpec >> allSharedPoolsUsing: namespace [
+	^self allSharedPools
+]
+
+{ #category : #enumerating }
 ClassSpec >> allSuperclassesDo: aBlock [
 	| s |
 	supername isNil ifTrue: [^self].
@@ -30,6 +35,16 @@ ClassSpec >> allSuperclassesDo: aBlock [
 	s isNil ifTrue: [^self].
 	aBlock value: s.
 	s allSuperclassesDo: aBlock
+]
+
+{ #category : #services }
+ClassSpec >> beArrayed [
+	format := format | self class arrayedFlag
+]
+
+{ #category : #services }
+ClassSpec >> beBytes [
+	format := format | self class bytesFlag
 ]
 
 { #category : #inquiries }
@@ -52,8 +67,8 @@ ClassSpec >> cvarNames: aCollection [
 ]
 
 { #category : #accessing }
-ClassSpec >> cvars: aCollection [
-	classVariables := aCollection
+ClassSpec >> cvars: aDictionary [
+	classVariables := aDictionary
 ]
 
 { #category : #testing }

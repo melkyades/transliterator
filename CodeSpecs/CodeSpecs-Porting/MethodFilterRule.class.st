@@ -20,7 +20,7 @@ MethodFilterRule class >> on: aClosure [
 MethodFilterRule >> basicApplyTo: aModuleSpec [
 	aModuleSpec allClassesDo: [:c | | candidates |
 		(scope includesClass: c name) ifTrue: [
-			candidates := c methods & c metaclass methods select: block.
+			candidates := c methods, c metaclass methods select: block.
 			candidates do: #removeFromClass]]
 ]
 
