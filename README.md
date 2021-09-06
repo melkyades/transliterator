@@ -9,7 +9,7 @@ An attempt to provide a set of tools to allow moving code between different dial
 1. Conceptually, the framework just applies a set of transliteration rules to generate code in different dialects.
 2. The framework provides generic rules for porting between pairs of dialects.
 3. Additionally, a project can manually add more rules specially crafted for particular porting mismatches.
-4. There is one git repo per dialect.
+4. A project would have one git repo per dialect.
 5. A project should define its main dialect. A CI job should be triggered when committing so that other dialect repos get updated.
 6. Potentially, a developer in other than main dialect might commit to its repo, and rules should be (automatically) reversed to allow porting back to the main repo.
 
