@@ -16,7 +16,7 @@ An attempt to provide a set of tools to allow moving code between different dial
 
 ## Loading
 
-For now, we are supporting just transliterating from Pharo (until we transliterate the transliterator :),
+For now, we only suppor transliterating from Pharo (until we transliterate the transliterator :),
 so the code only loads on Pharo.
 
 Transliterator uses Powerlang compiler to parse code and apply the rules. For now, you need to first
